@@ -1,20 +1,35 @@
-proverka = set()
+import datetime as datetime
+import os
+check = set()
 while True:
-    vhod = input("Input(Press q to exit):")
-    if vhod == "q":
-        if len(proverka) == 0:
+    input_data = input("Input(Press q to exit):")
+    if input_data == "q":
+        if len(check) == 0:
             break
         else:
-            final = list(proverka)
+            final = list(check)
             final.sort()
-            textfile = open("Results.txt", "w")
+            file_name = input("Please enter name for your checklist:")
+            file_name = file_name + " " + datetime.datetime.now().strftime("%d-%m-%Y - %H-%M") + ".txt"
+            file_name = str(file_name)
+            if os.path.isfile(file_name):
+                counter = 1
+                while True:
+                    counter += 1
+                    new_file_name = file_name.split(".txt")[0] + "-" + str(counter) + ".txt"
+                    if os.path.isfile(new_file_name):
+                        continue
+                    else:
+                        file_name = new_file_name
+                        break
+            textfile = open(file_name, "x")
             for elements in final:
                 textfile.write(elements + "\n")
             textfile.close()
             print(final)
         break
-    elif vhod in proverka:
+    elif input_data in check:
         print("You already got one.")
     else:
-        proverka.add(vhod)
+        check.add(input_data)
         print("Item added to checklist.")
