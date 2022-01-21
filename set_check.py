@@ -10,9 +10,10 @@ while True:
             final = list(check)
             final.sort()
             file_name = input("Please enter name for your checklist:")
-            file_name = file_name + " " + datetime.datetime.now().strftime("%d-%m-%Y - %H-%M") + ".txt"
+            file_name = file_name + " " + datetime.datetime.now().strftime("%d-%m-%Y - %H-%M") + ".txt" #adds name
+            # and timestamp
             file_name = str(file_name)
-            if os.path.isfile(file_name):
+            if os.path.isfile(file_name): #checks if file already exists and adds a number
                 counter = 1
                 while True:
                     counter += 1
