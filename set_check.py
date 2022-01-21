@@ -1,36 +1,26 @@
 import datetime as datetime
-import os
-check = set()
+check_set = set()
 while True:
     input_data = input("Input(Press q to exit):")
     if input_data == "q":
-        if len(check) == 0:
+        if len(check_set) == 0:
             break
         else:
-            final = list(check)
-            final.sort()
-            file_name = input("Please enter name for your checklist:")
-            file_name = file_name + " " + datetime.datetime.now().strftime("%d-%m-%Y - %H-%M") + ".txt" #adds name
-            # and timestamp
-            file_name = str(file_name)
-            if os.path.isfile(file_name): #checks if file already exists and adds a number
-                counter = 1
-                while True:
-                    counter += 1
-                    new_file_name = file_name.split(".txt")[0] + "-" + str(counter) + ".txt"
-                    if os.path.isfile(new_file_name):
-                        continue
-                    else:
-                        file_name = new_file_name
-                        break
+            final_list = sorted(check_set, key=lambda idc: (idc.isnumeric(), int(idc) if idc.isnumeric() else idc))
+            # idc - input data check - checks every entry if it's integer or strings and sorts accordingly
+            file_name = input("Please enter name for your checklist:") or "Checklist"
+            timestamp = datetime.datetime.now().strftime("%d_%m_%Y__%H_%M_%S")
+            file_name = f"{file_name}_{timestamp}.txt"  # adds name and timestamp
             textfile = open(file_name, "x")
-            for elements in final:
+            for elements in final_list:
                 textfile.write(elements + "\n")
             textfile.close()
-            print(final)
+            print(final_list)
         break
-    elif input_data in check:
+    elif input_data == "":
+        continue
+    elif input_data in check_set:
         print("You already got one.")
     else:
-        check.add(input_data)
+        check_set.add(input_data)
         print("Item added to checklist.")
